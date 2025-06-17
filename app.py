@@ -51,7 +51,22 @@ def deleta_professor(id):
 #___________________________________________________________________________________________________________________
 
 #Rotas para o POST de /Professor
-@app.rout('/Professor', methods = ['POST'])
+@app.route('/Professor', methods = ['POST'])
+def create_professor():
+    novo_professor = request.get_json()
+    
+    if not novo_professor or 'id' not in novo_professor or 'nome' not in novo_professor: 
+        return jsonify({'mensagem': 'Erro. Dados incompletos'}), 400
+    for professor in dados['Professor']:
+        if professor['id'] == novo_professor['id']:
+            return jsonify({'mensagem': 'Id já existente.'}), 409
+    
+    dados['Professor'].append(novo_professor)
+    return jsonify({'mensagem': 'Professor criado com sucesso!!!',
+                    'professor': novo_professor
+                    }), 201
+    
+    
 
 
 #------------------------------------------------------------------
@@ -62,13 +77,42 @@ def get_professor():
     professor = dados
     return jsonify(professor['Professor']), 200
 
+#POR ID
 @app.route('/Professor/<int:user_id>', methods = ['GET'])
 def get_professor_id(user_id):
     for professor in dados['Professor']:
         if professor['id'] == user_id:
             return jsonify(professor), 200
-    return jsonify({f'Erro ao procurar o professor: {user_id}'}), 404 
+    return jsonify({f'Erro ao procurar o professor: {user_id}'}), 404
               
+#------------------------------------------------------------------
+
+#ROTA para UPDATE de /Professor
+@app.route('/Professor', methods = ['PUT'])
+def limpar_campos_professor():
+    dados['Professor'] = [{
+        'id': '',
+        'nome' : '',
+        'idade': '',
+        'materia': '',
+        'observacoes': ''
+    }]
+    return jsonify({'mensagem':'Campos de Professor foram resetados!', 'Professor': dados['Professor']}), 200
+
+@app.route('/Professor/<int:user_id>', methods = ['PUT'])
+def limpar_campos_professor_por_id(user_id):
+    
+    for professor in dados['Professor']:
+        if professor['id'] == user_id:
+            professor.update({
+                'nome': '',
+                'idade': '',
+                'materia': '',
+                'observacoes': ''
+            })
+            return jsonify({'mensagem': f'Campos do Professor {user_id} foram resetados!', 
+                    'Professor': professor}), 200
+    return jsonify({'mensagem': f'Erro ao tentar resetar o professor de id {user_id}!'}), 404
 
 if __name__ == '__main__':
     app.run(debug= True)

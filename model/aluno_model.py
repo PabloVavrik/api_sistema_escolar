@@ -16,3 +16,6 @@ def retornar_aluno_por_id(user_id):
             return aluno
         return jsonify({'mensagem':'Id não encontrado'}), 500
     
+def criar_aluno():
+    
+    

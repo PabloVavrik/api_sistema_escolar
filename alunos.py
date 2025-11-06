@@ -8,6 +8,8 @@ dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundam
          'Turma': [{'id': 1, 'periodo': 'manha'}]
          }
 
+
+
 #--------------------------------------------------------------
 #ROTAS PARA GET DE /ALUNOS
 
@@ -23,6 +25,7 @@ def retornar_alunos():
     except Exception as e:
         return jsonify({'mensagem': f'Não foi possível retornar a lista de Alunos!',
                         'erro': f'Erro: {e}'}), 500
+    #MODEL FEITO 
     
 
 #retornar aluno por ID
@@ -38,6 +41,8 @@ def retornar_aluno_id(user_id):
     except Exception as e:
         return jsonify({'mensagem': 'Erro na requisição!',
                         'erro': str(e)}), 500
+    
+    #MODEL FEITO
 
 
 #--------------------------------------------------------------

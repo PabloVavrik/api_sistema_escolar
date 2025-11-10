@@ -67,6 +67,8 @@ def criar_aluno():
     
     except Exception as e:
         return jsonify({'mensagem': f'Erro ao criar o aluno: {e}'}), 500
+    
+#MODEL FEITO
 
 #--------------------------------------------------------------
 #ROTA PARA PUT DE /ALUNOS
@@ -79,6 +81,8 @@ def limpar_campos_aluno():
         }]
     return jsonify({'mensagem': 'Os campos foram limpos com sucesso!',
                     'Alunos': dados['Aluno']}), 200
+#MODEL FEITO
+
 
 
 @app.route('/Alunos/<int:user_id>', methods= ['PATCH'])
@@ -97,6 +101,7 @@ def atualizar_aluno_por_id(user_id):
     except Exception as e:
         return jsonify({'mensagem': 'Erro ao atualizar o aluno',
                         'erro': str(e)}), 500
+#MODEL FEITO
 
 
 #--------------------------------------------------------------

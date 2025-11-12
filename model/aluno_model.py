@@ -1,5 +1,3 @@
-from flask import Flask, jsonify, request
-
 dados = {
     'Aluno' : [
         { 'id': 1, 'nome': 'Stephanie', 'idade': 25},

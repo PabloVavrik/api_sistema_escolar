@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-app = Flask(__name__)
+
 
 
 dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundamentos da natacao', 'observacoes': ''}],
@@ -125,5 +125,3 @@ def deletar_aluno_por_id(user_id):
 
 
 
-if __name__ == '__main__':
-    app.run(debug= True)

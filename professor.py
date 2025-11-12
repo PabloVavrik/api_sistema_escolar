@@ -27,6 +27,7 @@ def criar_professor():
                     'professor': novo_professor
                     }), 201
     
+    #MODEL FEITO
     
 
 
@@ -45,6 +46,8 @@ def retornar_professor_por_id(user_id):
         if professor['id'] == user_id:
             return jsonify(professor), 200
     return jsonify({f'Erro ao procurar o professor: {user_id}'}), 404
+
+#MODEL FEITO
               
 #------------------------------------------------------------------
 
@@ -60,6 +63,8 @@ def limpar_campos_professor():
     }]
     return jsonify({'mensagem':'Campos de Professor foram resetados!', 'Professor': dados['Professor']}), 200
 
+#MODEL FEITO
+
 @app.route('/Professor/<int:user_id>', methods = ['PUT'])
 def limpar_campos_professor_por_id(user_id):
     
@@ -74,6 +79,7 @@ def limpar_campos_professor_por_id(user_id):
             return jsonify({'mensagem': f'Campos do Professor {user_id} foram resetados!', 
                     'Professor': professor}), 200
     return jsonify({'mensagem': f'Erro ao tentar resetar o professor de id {user_id}!'}), 404
+#MODEL FEITO
 
 @app.route('/Professor/<int:user_id>', methods = ['PATCH'])
 def atualizar_professor_por_id(user_id):

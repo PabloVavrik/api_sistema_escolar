@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 
-
 app = Flask(__name__)
 
 dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundamentos da natacao', 'observacoes': ''}],
@@ -8,7 +7,11 @@ dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundam
          'Turma': [{'id': 1, 'periodo': 'manha'}]
          }
 
-
+#------------------------------------------------------------------
+#
+#       TODA A PARTE DO MODEL DE PROFESSORES JA ESTA COMPLETA
+#       AGORA, SÓ FALTA O CONTROLLER
+#       APÓS O CONTROLER, APAGAR ESTE ARQUIVO
 
 
 #Rotas para o POST de /Professor
@@ -98,7 +101,9 @@ def atualizar_professor_por_id(user_id):
                 'mensagem': professor
                 }), 200
    
-    return jsonify({f'O Professor {user_id} não pode ser atualizado'}), 404 
+    return jsonify({f'O Professor {user_id} não pode ser atualizado'}), 404
+
+#MODEL FEITO 
         
 
 #------------------------------------------------------------------
@@ -114,6 +119,8 @@ def deletar_professor_por_id(user_id):
             return jsonify({'mensagem': f'O professor {user_id} foi deletado com sucesso!'}), 200
     
     return jsonify({'mensagem': f'Erro ao tentar deletar o professor {user_id}!'}), 404
+
+#MODEL FEITO
 
 
 if __name__ == '__main__':

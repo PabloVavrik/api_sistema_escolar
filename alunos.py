@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-
+app = Flask(__name__)
 
 
 dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundamentos da natacao', 'observacoes': ''}],
@@ -8,6 +8,12 @@ dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundam
          'Turma': [{'id': 1, 'periodo': 'manha'}]
          }
 
+
+#------------------------------------------------------------------
+#
+#       TODA A PARTE DO MODEL DE ALUNOS JA ESTA COMPLETO
+#       AGORA, SÓ FALTA O CONTROLLER
+#       APÓS O CONTROLER, APAGAR ESTE ARQUIVO
 
 
 #--------------------------------------------------------------

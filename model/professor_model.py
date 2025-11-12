@@ -2,7 +2,7 @@ dados = {
     'Professor':[{'id': 1, 
                   'nome': 'Pablo', 
                   'idade': 31, 
-                  'materia': 'Fundamentos da natacao', 
+                  'materia': 'Fundamentos da natação', 
                   'observacoes': ''},
                   {'id': 2, 
                   'nome': 'Giovanni', 
@@ -17,42 +17,49 @@ dados = {
                   {'id': 4, 
                   'nome': 'Sandra', 
                   'idade': 56, 
-                  'materia': 'Hermeneutica', 
+                  'materia': 'Hermenêutica', 
                   'observacoes': ''}],
         }
 
-
+#CREATE
 def criar_professor(novo_professor):
     try:
         dados['Professor'].append(novo_professor)
         return novo_professor
     except Exception as e:
-        raise Exception(f'Erro ao criar professor: {e}')
+        raise Exception(f'Erro ao criar professor. Erro: {e}')
     
 
-def retornar_professor():
+#READ
+def retornar_professores():
     return dados['Professor']
 
+#READ (por Id)
 def retornar_professor_por_id(user_id):
     try:
         for professor in dados['Professor']:
             if professor.get('id') == user_id:
                 return professor
+        return False
     except Exception as e:
-        raise Exception(f'Erro ao encontrar professor: {e}')
+        raise Exception(f'Erro ao encontrar professor. Erro: {e}')
     
 
-def limpar_campos_professor():
+#UPDATE
+def limpar_campos_professores():
     try:
         for professor in dados['Professor']:
             for campo in list(professor.keys()):
                 if campo != 'id':
                     professor[campo] = ''
                 return dados['Professor']
+        return False
     except Exception as e:
-        raise Exception(f'Erro ao limpar campos: {e}')
+        raise Exception(f'Erro ao limpar campos. Erro: {e}')
     
-def limpar_campos_por_id(user_id, dado):
+
+#PATCH
+def limpar_campos_professor_por_id(user_id):
     try:
         for professor in dados.get('Professor', []):
             if professor.get('id') == user_id:
@@ -60,6 +67,31 @@ def limpar_campos_por_id(user_id, dado):
                     if campo != 'id':
                         professor[campo] = ''
                     return professor
-        return None
+        return False
     except Exception as e:
-        raise Exception(f'Erro ao limpar campo do professor: {e}') 
+        raise Exception(f'Erro ao limpar campo do professor. Erro: {e}') 
+    
+
+#PATCH
+def atualizar_prof_por_id(user_id, dado):
+    try:
+        for professor in dados['Professor']:
+            if professor.get('id') == user_id:
+                professor.update(dado)
+                return professor
+        return False
+    except Exception as e:
+        raise Exception(f'Não foi possível atualizar professor. Erro: {e}')
+    
+
+#DELETE (Por Id)
+def deletar_professor(user_id):
+    try:    
+        professor_encontrado = next(
+                (p for p in dados['Professor'] if p.get('id') == user_id), None)
+        if professor_encontrado: 
+            dados['Professor'].remove(professor_encontrado)
+            return dados['Professor']
+        return False
+    except Exception as e:
+        raise Exception(f'Erro ao deletar professor. Erro: {e}')

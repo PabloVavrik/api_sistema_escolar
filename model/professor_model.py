@@ -21,9 +21,19 @@ dados = {
                   'observacoes': ''}],
         }
 
+
+def gerar_novo_id():
+    if len(dados['Professor']) == 0:
+        return 1
+    ultimo_id = dados['Professor'][-1]['id'] 
+    return ultimo_id +1
+
+
 #CREATE
 def criar_professor(novo_professor):
     try:
+        novo_id = gerar_novo_id()
+        novo_professor['id'] = novo_id
         dados['Professor'].append(novo_professor)
         return novo_professor
     except Exception as e:

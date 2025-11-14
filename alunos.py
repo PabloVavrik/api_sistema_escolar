@@ -19,7 +19,7 @@ dados = {'Professor':[{'id': 1, 'nome': 'Pablo', 'idade': 31, 'materia': 'Fundam
 #--------------------------------------------------------------
 #ROTAS PARA GET DE /ALUNOS
 
-@app.route("/Alunos", methods = ['GET'])
+'''@app.route("/Alunos", methods = ['GET'])
 def retornar_alunos():
     try:
         alunos = dados['Aluno']
@@ -49,7 +49,7 @@ def retornar_aluno_id(user_id):
                         'erro': str(e)}), 500
     
     #MODEL FEITO
-
+'''
 
 #--------------------------------------------------------------
 #ROTAS PARA POST DE /ALUNOS

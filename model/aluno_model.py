@@ -31,6 +31,7 @@ def criar_aluno(novo_aluno):
         return novo_aluno
     except Exception as e:
         raise Exception(f'Erro ao criar um novo aluno {e}')
+#CONTROLER FEITO
     
 
 def limpar_campos_alunos():
@@ -42,22 +43,26 @@ def limpar_campos_alunos():
         return dados['Aluno']
     except Exception as e:
         raise Exception(f'Erro ao limpar os campos de aluno {e}')
+#CONTROLER FEITO
     
 def atualizar_aluno_por_id(user_id, nova_informacao):
     try:
+        if 'id' in nova_informacao:
+            return {'erro':'O campo id não pode ser atualizado!'}
         for aluno in dados['Aluno']:
             if aluno.get('id') == user_id:
                 aluno.update(nova_informacao)
-        return aluno
+                return aluno
+        return {'erro': 'Aluno não encontrado!'}
     except Exception as e:
-        raise Exception(f'Erro ao atualizar aluno {e}')
+        raise Exception(f'Erro ao atualizar aluno: {e}')
+#CONTROLER FEITO
     
-#PRECISO COLOCAR UMA EXCESSÃO PARA NÃO ATUALIZAR O CAMPO ID
     
-
 def deletar_aluno_por_id(user_id):
     for aluno in dados['Aluno']:
         if aluno.get('id') == user_id:
             dados['Aluno'].remove(aluno)
             return True
     return False
+#CONTROLER FEITO

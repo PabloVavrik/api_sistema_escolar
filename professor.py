@@ -52,7 +52,6 @@ def retornar_professor_por_id(user_id):
 
 #MODEL FEITO
               
-#------------------------------------------------------------------
 
 #ROTA para UPDATE de /Professor
 @app.route('/Professor', methods = ['PUT'])

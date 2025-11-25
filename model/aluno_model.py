@@ -12,29 +12,26 @@ def gerar_novo_id():
     ultimo_id = dados['Aluno'][-1]['id'] 
     return ultimo_id +1
 
+
 def retornar_aluno():
     return dados['Aluno']
-#CONTROLER FEITO
+
 
 def retornar_aluno_por_id(user_id):
     for aluno in dados['Aluno']:
         if aluno.get('id') == user_id:
             return aluno
-        return None
-#CONTROLER FEITO
+    return None
+
     
 def criar_aluno(novo_aluno):
-    try:
-        novo_id = gerar_novo_id()
-        novo_aluno['id'] = novo_id
-        dados['Aluno'].append(novo_aluno)
-        return novo_aluno
-    except Exception as e:
-        raise Exception(f'Erro ao criar um novo aluno {e}')
-#CONTROLER FEITO
-    
+    novo_id = gerar_novo_id()
+    novo_aluno['id'] = novo_id
+    dados['Aluno'].append(novo_aluno)
+    return novo_aluno
+   
 
-def limpar_campos_alunos():
+def limpar_campos_aluno():
     try:
         for aluno in dados['Aluno']:
             for campo in list(aluno.keys()):
@@ -43,7 +40,7 @@ def limpar_campos_alunos():
         return dados['Aluno']
     except Exception as e:
         raise Exception(f'Erro ao limpar os campos de aluno {e}')
-#CONTROLER FEITO
+
     
 def atualizar_aluno_por_id(user_id, nova_informacao):
     try:
@@ -56,8 +53,7 @@ def atualizar_aluno_por_id(user_id, nova_informacao):
         return {'erro': 'Aluno não encontrado!'}
     except Exception as e:
         raise Exception(f'Erro ao atualizar aluno: {e}')
-#CONTROLER FEITO
-    
+
     
 def deletar_aluno_por_id(user_id):
     for aluno in dados['Aluno']:
@@ -65,4 +61,3 @@ def deletar_aluno_por_id(user_id):
             dados['Aluno'].remove(aluno)
             return True
     return False
-#CONTROLER FEITO

@@ -29,7 +29,6 @@ def gerar_novo_id():
     return ultimo_id +1
 
 
-#CREATE
 def criar_professor(novo_professor):
     try:
         novo_id = gerar_novo_id()
@@ -40,11 +39,10 @@ def criar_professor(novo_professor):
         raise Exception(f'Erro ao criar professor. Erro: {e}')
     
 
-#READ
 def retornar_professores():
     return dados['Professor']
 
-#READ (por Id)
+
 def retornar_professor_por_id(user_id):
     try:
         for professor in dados['Professor']:
@@ -55,7 +53,6 @@ def retornar_professor_por_id(user_id):
         raise Exception(f'Erro ao encontrar professor. Erro: {e}')
     
 
-#UPDATE
 def limpar_campos_professores():
     try:
         for professor in dados['Professor']:
@@ -68,30 +65,13 @@ def limpar_campos_professores():
         raise Exception(f'Erro ao limpar campos. Erro: {e}')
     
 
-#PATCH
-def limpar_campos_professor_por_id(user_id):
-    try:
-        for professor in dados.get('Professor', []):
-            if professor.get('id') == user_id:
-                for campo in professor.keys():
-                    if campo != 'id':
-                        professor[campo] = ''
-                    return professor
-        return False
-    except Exception as e:
-        raise Exception(f'Erro ao limpar campo do professor. Erro: {e}') 
+def atualizar_prof_por_id(user_id, novos_dado):
+    for professor in dados['Professor']:
+        if professor.get('id') == user_id:
+            professor.update(novos_dado)
+            return professor
+    return None
     
-
-#PATCH
-def atualizar_prof_por_id(user_id, dado):
-    try:
-        for professor in dados['Professor']:
-            if professor.get('id') == user_id:
-                professor.update(dado)
-                return professor
-        return False
-    except Exception as e:
-        raise Exception(f'Não foi possível atualizar professor. Erro: {e}')
     
 
 #DELETE (Por Id)

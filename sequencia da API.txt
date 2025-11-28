@@ -1,6 +1,6 @@
 proximas etapas para a API
 
-* Separar o MVC
+
 * Testes unitários
 * SQLite (slqalchemy)
 * testes de integração

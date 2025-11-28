@@ -4,7 +4,7 @@ import model.aluno_model as aluno_model
 aluno_bp = Blueprint('aluno_bp', __name__, url_prefix='/alunos')
 
 
-#####################################################################################
+
 @aluno_bp.route('', methods=['GET'])
 def get_alunos():
     try:
@@ -27,7 +27,6 @@ def get_aluno_id(user_id):
         return jsonify({'Erro': f'Erro ao retornar aluno: {e}'}),500
 
 
-#####################################################################################
 @aluno_bp.route('/', methods=['POST'])
 def create_aluno():
     try:
@@ -38,7 +37,7 @@ def create_aluno():
     except Exception as e:
         return jsonify({'erro': f'Erro ao criar aluno: {e}'}), 500
 
-#####################################################################################
+
 @aluno_bp.route('/limpar', methods =['POST'])
 def limpar_campos_aluno():
     try:

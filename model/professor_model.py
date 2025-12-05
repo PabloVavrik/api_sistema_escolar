@@ -73,8 +73,6 @@ def atualizar_prof_por_id(user_id, novos_dado):
     return None
     
     
-
-#DELETE (Por Id)
 def deletar_professor(user_id):
     try:    
         professor_encontrado = next(

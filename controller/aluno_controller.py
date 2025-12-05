@@ -47,7 +47,7 @@ def limpar_campos_aluno():
     except Exception as e:
         return jsonify({'erro':f'Erro ao tentar limpar os campos: {e}'}), 500
 
-#####################################################################################
+
 @aluno_bp.route('/<int:user_id>', methods =['PATCH'])
 def atualizar_aluno(user_id):
     try:
@@ -65,7 +65,7 @@ def atualizar_aluno(user_id):
     except Exception as e:
         return jsonify({'erro': f'Erro ao atualizar aluno. Erro: {e}'}), 500
     
-#####################################################################################
+
 @aluno_bp.route('/<int:user_id>', methods = ['DELETE'])
 def delete_aluno(user_id):
     try:

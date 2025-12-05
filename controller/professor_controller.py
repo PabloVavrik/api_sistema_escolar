@@ -31,6 +31,22 @@ def get_professor_id(user_id):
                         'detalhes': str(e)}), 500
     
 
+@professor_bp.route('/', methods=['POST'])
+def criar_professor():
+    
+        dados = request.get_json()
+        if not dados:
+            return jsonify({'erro':'JSON não enviado ou inválido!'}), 400
+        
+        novo_professor = professor_model.criar_professor(dados)
+        
+        if novo_professor:
+            return jsonify({'mensagem':'Professor criado com sucesso!',
+                            'professor': novo_professor}), 201
+        
+        return jsonify({'mensagem': 'erro ao criar professor'}), 500
+
+
 @professor_bp.route('/limpar', methods=['POST'])
 def limpar_campos_professor():
 

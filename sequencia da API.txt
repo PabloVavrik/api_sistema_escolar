@@ -1,0 +1,6 @@
+proximas etapas para a API
+
+
+* Testes unitários
+* SQLite (slqalchemy)
+* testes de integração

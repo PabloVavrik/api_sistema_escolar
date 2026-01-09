@@ -1,12 +1,23 @@
 from flask import Flask
-from controller.aluno_controller import aluno_bp
+from flask_restx import Api
+
+#from controller.aluno_controller import aluno_bp
+from controller.aluno_controller import aluno_ns
 from controller.professor_controller import professor_bp
 
 
 def create_app():
     app = Flask(__name__)
 
-    app.register_blueprint(aluno_bp)
+    api = Api(
+        app,
+        title= "API Faculdade ADS",
+        version= "1.0",
+        description= "Documentação da API de Alunos e Professores"
+    )
+
+   #app.register_blueprint(aluno_bp)
+    api.add_namespace(aluno_ns)
     app.register_blueprint(professor_bp)
     return app
 

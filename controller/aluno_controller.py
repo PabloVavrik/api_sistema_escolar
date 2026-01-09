@@ -1,11 +1,31 @@
-from flask import Blueprint, jsonify, request
+#from flask import Blueprint, jsonify, request
+
+from flask_restx import Namespace, Resource, fields
 import model.aluno_model as aluno_model
 
-aluno_bp = Blueprint('aluno_bp', __name__, url_prefix='/alunos')
+#aluno_bp = Blueprint('aluno_bp', __name__, url_prefix='/alunos')
+aluno_ns = Namespace(
+    'alunos',
+    description= 'Operacoes relacionadas a alunos'
+)
 
+aluno_model_swagger = aluno_ns.model('Aluno',{
+    'nome': fields.String(required=True, description= 'Nome do aluno'),
+    'idade': fields.Integer(required=True, description= 'Idade do aluno')
+})
 
+@aluno_ns.route('/')
+class AlunoList(Resource):
+    def get(self):
+        return {"mensagem": "Lista de alunos"}
+    
+    @aluno_ns.expect(aluno_model_swagger, validate=True)
+    def post(self):
+        dados = aluno_ns.payload
+        aluno_criado = aluno_model.criar_aluno(dados)
+        return aluno_criado, 201
 
-@aluno_bp.route('', methods=['GET'])
+#@aluno_bp.route('', methods=['GET'])
 def get_alunos():
     try:
         alunos = aluno_model.retornar_aluno()
@@ -15,7 +35,7 @@ def get_alunos():
         return jsonify({'Erro': f'não foi possível retornar lista de alunos: {e}'}), 500
 
 
-@aluno_bp.route('/<int:user_id>', methods=['GET'])
+#@aluno_bp.route('/<int:user_id>', methods=['GET'])
 def get_aluno_id(user_id):
     try:
         aluno = aluno_model.retornar_aluno_por_id(user_id)
@@ -27,7 +47,7 @@ def get_aluno_id(user_id):
         return jsonify({'Erro': f'Erro ao retornar aluno: {e}'}),500
 
 
-@aluno_bp.route('/', methods=['POST'])
+#@aluno_bp.route('/', methods=['POST'])
 def create_aluno():
     try:
         novo_aluno = request.get_json()
@@ -38,7 +58,7 @@ def create_aluno():
         return jsonify({'erro': f'Erro ao criar aluno: {e}'}), 500
 
 
-@aluno_bp.route('/limpar', methods =['POST'])
+#@aluno_bp.route('/limpar', methods =['POST'])
 def limpar_campos_aluno():
     try:
         campos_limpos = aluno_model.limpar_campos_aluno()
@@ -48,7 +68,7 @@ def limpar_campos_aluno():
         return jsonify({'erro':f'Erro ao tentar limpar os campos: {e}'}), 500
 
 
-@aluno_bp.route('/<int:user_id>', methods =['PATCH'])
+#@aluno_bp.route('/<int:user_id>', methods =['PATCH'])
 def atualizar_aluno(user_id):
     try:
         novos_dados = request.get_json()
@@ -66,7 +86,7 @@ def atualizar_aluno(user_id):
         return jsonify({'erro': f'Erro ao atualizar aluno. Erro: {e}'}), 500
     
 
-@aluno_bp.route('/<int:user_id>', methods = ['DELETE'])
+#@aluno_bp.route('/<int:user_id>', methods = ['DELETE'])
 def delete_aluno(user_id):
     try:
         aluno_deletado = aluno_model.deletar_aluno_por_id(user_id)

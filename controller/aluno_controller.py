@@ -14,18 +14,37 @@ aluno_model_swagger = aluno_ns.model('Aluno',{
     'idade': fields.Integer(required=True, description= 'Idade do aluno')
 })
 
+aluno_response_model = aluno_ns.model('AlunoResponse', {
+    'id': fields.Integer(description='Id do aluno'),
+    'nome': fields.String(description='Nome do aluno'),
+    'idade': fields.String(description='Idade do aluno')
+})
+
+
 @aluno_ns.route('/')
 class AlunoList(Resource):
     def get(self):
         return {"mensagem": "Lista de alunos"}
     
+           
     @aluno_ns.expect(aluno_model_swagger, validate=True)
+    @aluno_ns.marshal_with(aluno_response_model, code=201)
     def post(self):
         dados = aluno_ns.payload
         aluno_criado = aluno_model.criar_aluno(dados)
         return aluno_criado, 201
 
-#@aluno_bp.route('', methods=['GET'])
+@aluno_ns.route('/<int:id>')
+class AlunoResource(Resource):
+    @aluno_ns.marshal_with(aluno_response_model)
+    @aluno_ns.response(200, 'Aluno encontrado')
+    @aluno_ns.response(404, 'Aluno não encontrado')
+    def get(self, id):
+        aluno= aluno_model.retornar_aluno_por_id(id)
+        if not aluno:
+            aluno_ns.abort(404, 'Aluno não encontrado')
+        return aluno
+#@aluno_bp.route('', methods=['GET'])       NAMESPACE FEITO
 def get_alunos():
     try:
         alunos = aluno_model.retornar_aluno()
@@ -35,7 +54,7 @@ def get_alunos():
         return jsonify({'Erro': f'não foi possível retornar lista de alunos: {e}'}), 500
 
 
-#@aluno_bp.route('/<int:user_id>', methods=['GET'])
+#@aluno_bp.route('/<int:user_id>', methods=['GET'])     NAMESPACE FEITO
 def get_aluno_id(user_id):
     try:
         aluno = aluno_model.retornar_aluno_por_id(user_id)
@@ -47,7 +66,7 @@ def get_aluno_id(user_id):
         return jsonify({'Erro': f'Erro ao retornar aluno: {e}'}),500
 
 
-#@aluno_bp.route('/', methods=['POST'])
+#@aluno_bp.route('/', methods=['POST'])     NAMESPACE FEITO
 def create_aluno():
     try:
         novo_aluno = request.get_json()
@@ -58,7 +77,7 @@ def create_aluno():
         return jsonify({'erro': f'Erro ao criar aluno: {e}'}), 500
 
 
-#@aluno_bp.route('/limpar', methods =['POST'])
+#@aluno_bp.route('/limpar', methods =['POST'])  
 def limpar_campos_aluno():
     try:
         campos_limpos = aluno_model.limpar_campos_aluno()

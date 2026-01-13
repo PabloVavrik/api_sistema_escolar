@@ -1,7 +1,5 @@
 from flask import Flask
 from flask_restx import Api
-
-#from controller.aluno_controller import aluno_bp
 from controller.aluno_controller import aluno_ns
 from controller.professor_controller import professor_bp
 
@@ -16,7 +14,7 @@ def create_app():
         description= "Documentação da API de Alunos e Professores"
     )
 
-   #app.register_blueprint(aluno_bp)
+   
     api.add_namespace(aluno_ns)
     app.register_blueprint(professor_bp)
     return app
@@ -25,5 +23,4 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     app.run(debug= True)
-            
-
+    

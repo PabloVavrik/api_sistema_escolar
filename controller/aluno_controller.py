@@ -3,25 +3,32 @@ import model.aluno_model as aluno_model
 
 
 aluno_ns = Namespace(
-    'alunos',
+    'Alunos',
     description= 'Operacoes relacionadas a alunos'
 )
 
 
 #==================================================================================================================================
 
-
+#Este model é criado quando você tem um POST. Ele é o model responsável por apresentar o body mínimo para a 
+#criação de um aluno.
+#Verbo = POST
 aluno_model_swagger = aluno_ns.model('Aluno',{
     'nome': fields.String(required=True, description= 'Nome do aluno'),
     'idade': fields.Integer(required=True, description= 'Idade do aluno')
 })
 
+#Este model representa como o backend devolve o recurso. Deve apresentar todos os campos.
+#Normalmente, ele vem associado com o @marshal_with
+#Verbo = GET, POST, PATCH
 aluno_response_model = aluno_ns.model('AlunoResponse', {
     'id': fields.Integer(description='Id do aluno'),
     'nome': fields.String(description='Nome do aluno'),
     'idade': fields.Integer(description='Idade do aluno')
 })
 
+#Este model é utilizado quando o cliente deseja alterar um dos campos, seja nome, idade, etc...
+#Verbo = PATCH
 aluno_patch_model = aluno_ns.model('AlunoPatch',{
     'nome': fields.String(description='Nome do aluno'),
     'idade': fields.Integer(description='Idade do aluno')
@@ -63,11 +70,11 @@ class AlunoResource(Resource):
     
 
 
-    @aluno_ns.expect(aluno_patch_model, validate= True)
+    @aluno_ns.expect(aluno_patch_model, validate= True)             #PATCH
     @aluno_ns.marshal_with(aluno_response_model)
     @aluno_ns.response(200, 'Aluno atualizado!')
     @aluno_ns.response(400, 'Dados invalidos')
-    @aluno_ns.response(404, 'Aluno nao encontrado')                 #PATCH
+    @aluno_ns.response(404, 'Aluno nao encontrado')                
     def patch(self, id):
 
         dados = aluno_ns.payload

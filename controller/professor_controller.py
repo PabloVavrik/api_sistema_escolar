@@ -1,94 +1,96 @@
-from flask import Blueprint, jsonify, request
+from flask_restx import Namespace, Resource, fields 
 import model.professor_model as professor_model
 
-professor_bp = Blueprint('professor_bp', __name__, url_prefix= '/professor')
+
+professor_ns = Namespace(
+    'Professores',
+    description= 'Operacoes relacionadas a professores'
+)
+
+#==================================================================================================================================
+
+professor_response_model = professor_ns.model('ProfessorResponse',{
+    'id' : fields.Integer(description= 'Id do professor'),
+    'nome': fields.String(description= 'Nome do professor'),
+    'idade': fields.Integer(description= 'Idade do professor'),
+    'materia': fields.String(description= 'Materia que o professor leciona'),
+    'observacoes': fields.String(description= '')
+})
 
 
 
-@professor_bp.route('', methods=['GET'])
-def get_professores():
-    try:
+professor_model_swagger = professor_ns.model('Professor', {
+    'nome': fields.String(required= True, description= 'Nome do professor'),
+    'idade': fields.Integer(required=True, description= 'Idade do professor'),
+    'materia': fields.String(required=True, description= 'Materia que o professor leciona'),
+    'observacoes': fields.String(required=True, description= '')
+})
+
+
+
+professor_patch_model = professor_ns.model('ProfessorPatch', {
+    'nome': fields.String(description= 'Nome do professor'),
+    'idade': fields.Integer(description= 'Idade do professor'),
+    'materia': fields.String(description= 'Materia que o professor leciona'),
+    'observacoes': fields.String(description= '')
+})
+
+#==================================================================================================================================
+
+@professor_ns.route('/')
+class ProfessorList(Resource):
+    @professor_ns.marshal_list_with(professor_response_model)               #GET
+    def get(self):
         professores = professor_model.retornar_professores()
-        return jsonify({'professores': professores}),200
-        
-    except Exception as e:
-        return jsonify({'erro': 'não foi possivel retornar lista de professores.',
-                        'detalhes': str(e)}),500
+        return professores, 200
 
 
-@professor_bp.route('/<int:user_id>', methods=['GET'])
-def get_professor_id(user_id):
-    try:
-        professor = professor_model.retornar_professor_por_id(user_id)
+    @professor_ns.expect(professor_model_swagger, validate=True)            #POST
+    @professor_ns.marshal_with(professor_response_model, code=201)
+    def post(self):
 
-        if professor is None:
-            return jsonify({'erro': 'Professor não encontrado'}), 404
-        
-        return jsonify({'professor': professor}),200
-    
-    except Exception as e:
-        return jsonify({'erro': 'Erro interno ao tentar buscar professor',
-                        'detalhes': str(e)}), 500
-    
-
-@professor_bp.route('/', methods=['POST'])
-def criar_professor():
-    
-        dados = request.get_json()
-        if not dados:
-            return jsonify({'erro':'JSON não enviado ou inválido!'}), 400
-        
+        dados = professor_ns.payload
         novo_professor = professor_model.criar_professor(dados)
         
-        if novo_professor:
-            return jsonify({'mensagem':'Professor criado com sucesso!',
-                            'professor': novo_professor}), 201
+        return novo_professor, 201
+
+#==================================================================================================================================
+
+@professor_ns.route('/<int:id>')                                            #GET por Id
+class ProfessorResource(Resource):
+    @professor_ns.marshal_with(professor_response_model)
+    @professor_ns.response(200, 'Professor encontrado')
+    @professor_ns.response(404, 'Professor não encontrado')
+    def get(self, id):
         
-        return jsonify({'mensagem': 'erro ao criar professor'}), 500
+        professor = professor_model.retornar_professor_por_id(id)
+        if not professor:
+            professor_ns.abort(404, 'Professor não encontrado')
+        return professor, 200
 
 
-@professor_bp.route('/limpar', methods=['POST'])
-def limpar_campos_professor():
+    @professor_ns.marshal_with(professor_response_model)     #PATCH
+    @professor_ns.expect(professor_patch_model, validate= True)
+    @professor_ns.response(200, 'Campo atualizado')
+    @professor_ns.response(400, 'Dados invalidos')
+    @professor_ns.response(404, 'Professor nao contrado')
+    def patch(self, id):
+        dados = professor_ns.payload
+        professor_atualizado = professor_model.atualizar_prof_por_id(id, dados)
 
-    try:
-        campos_limpos = professor_model.limpar_campos_professores()
-        return jsonify({'resultado': campos_limpos}),200
+        if not any(dados.values()):
+            professor_ns.abort(400, 'Informe ao menos um dos campos: nome, idade, materia ou observacoes')
+        return professor_atualizado, 200
     
-    except Exception as e:
-        return jsonify({'eroo': 'Não foi possível realizar operação',
-                        'detalhes': str(e)}), 500
     
-
-@professor_bp.route('/<int:user_id>', methods=['PATCH'])
-def atualizar_professor(user_id):
-    try:
-        dados = request.get_json()
-        professor_atualizado = professor_model.atualizar_prof_por_id(user_id, dados)
-
-        if professor_atualizado is None:
-            return jsonify({'erro': 'Professor não encontrado.'}), 404
-        
-        return jsonify({'Professor atualizado:': professor_atualizado}),200
     
-    except Exception as e:
-        return jsonify({'erro': 'Erro ao tentar atualizar professor.',
-                        'detalhes': str(e)}), 500
+    @professor_ns.response(204, 'Professor deletado')                       #DELETE
+    @professor_ns.response(400, 'Erro ao deletar professor')
+    def delete(self, id):
+        professor_deletado = professor_model.deletar_professor(id)
+        if not professor_deletado:
+            professor_ns.abort(404, 'Professor nao encontrado')
+        return '', 204
 
 
-@professor_bp.route('/<int:user_id>', methods=['DELETE'])
-def delete_professor(user_id):
-    try:
-        professor_deletado = professor_model.deletar_professor(user_id)
-
-        if professor_deletado:
-            return jsonify({'mensagem': 'Professor deletado com sucesso!'}),200
-       
-        return jsonify({'erro': 'Professor não encontrado!'}),404
-        
-    except Exception as e:
-        return jsonify({'erro': 'Erro ao tentar deletar professor.',
-                        'detalhe': str(e)}),500
-
-       
-    
 

@@ -65,9 +65,9 @@ def limpar_campos_professores():
         raise Exception(f'Erro ao limpar campos. Erro: {e}')
     
 
-def atualizar_prof_por_id(user_id, novos_dado):
-    for professor in dados['Professor']:
-        if professor.get('id') == user_id:
+def atualizar_prof_por_id(user_id, novos_dado):         #Esta errado. preciso arrumar toda a lógica, porque ele não
+    for professor in dados['Professor']:                #esta atualizando somente a informação passada. Ele esta zerando
+        if professor.get('id') == user_id:              #todos os campos e deixando-os como NULL
             professor.update(novos_dado)
             return professor
     return None

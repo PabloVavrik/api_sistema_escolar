@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_restx import Api
 from controller.aluno_controller import aluno_ns
-from controller.professor_controller import professor_bp
+from controller.professor_controller import professor_ns
+
 
 
 def create_app():
@@ -16,7 +17,7 @@ def create_app():
 
    
     api.add_namespace(aluno_ns)
-    app.register_blueprint(professor_bp)
+    api.add_namespace(professor_ns)
     return app
 
 

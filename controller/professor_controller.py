@@ -3,7 +3,7 @@ import model.professor_model as professor_model
 
 
 professor_ns = Namespace(
-    'Professores',
+    'professores',
     description= 'Operacoes relacionadas a professores'
 )
 

@@ -3,7 +3,7 @@ import model.aluno_model as aluno_model
 
 
 aluno_ns = Namespace(
-    'Alunos',
+    'alunos',
     description= 'Operacoes relacionadas a alunos'
 )
 

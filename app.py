@@ -5,8 +5,11 @@ from controller.professor_controller import professor_ns
 
 
 
-def create_app():
+def create_app(test_config= False):
     app = Flask(__name__)
+
+    if test_config:
+        app.config['TESTING'] = True
 
     api = Api(
         app,
@@ -18,6 +21,7 @@ def create_app():
    
     api.add_namespace(aluno_ns)
     api.add_namespace(professor_ns)
+    
     return app
 
 
